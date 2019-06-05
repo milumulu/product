@@ -1,5 +1,6 @@
 package com.milu.product.controller;
 
+import com.milu.product.DTO.CartDTO;
 import com.milu.product.VO.ResultVO;
 import com.milu.product.controller.Data.ProductResult;
 import com.milu.product.entity.ProductCategory;
@@ -9,9 +10,7 @@ import com.milu.product.service.ProductInfoService;
 import com.milu.product.utils.ResultVOUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,5 +59,16 @@ public class ProductController {
             productResultList.add(productResult);
         }
         return ResultVOUtil.success(productResultList);
+    }
+
+    @PostMapping("/getProductInfoListByIds")
+    public List<ProductInfo> getProductInfoListByIds(@RequestBody  List<String> productIdList) {
+        List<ProductInfo> productInfoList = productInfoService.findProductInfoListByIds(productIdList);
+        return productInfoList;
+    }
+
+    @PostMapping("/decreaseStock")
+    public void decreaseStock(@RequestBody List<CartDTO> cartDTOList) {
+        productInfoService.decreaseStock(cartDTOList);
     }
 }
